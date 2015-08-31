@@ -27,22 +27,22 @@ class fhs_app::params {
       },
       root => {
         manage   => true,
-        path     => "/app",
+        path     => '/app',
         mode     => 'u+rwX,g+rX,o+rX',
       },
       homes => {
         manage   => true,
-        path     => "/app/users",
+        path     => '/app/users',
         mode     => 'u+rwX,g+rX,o+rX',
       },
       logs => {
         manage   => true,
-        path     => "/app/logs",
+        path     => '/app/logs',
         mode     => 'u+rwX,g+rX,o+rX',
       },
       backups => {
         manage   => true,
-        path     => "/app/backups",
+        path     => '/app/backups',
         mode     => 'u+rwX,g+rX,o+rX',
       },
     },
