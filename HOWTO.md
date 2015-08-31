@@ -37,6 +37,17 @@ class { '::fhs_app':
         mode           => 'u+rwX,g+rX,o+rX',     # optional, string
       },
     },
+    defaults => {
+      home => {
+        mode     => 'u+rwX,g+rwX,o=',            # optional, string
+      },
+      log => {
+        mode     => 'u+rwX,g+rwX,o=',            # optional, string
+      },
+      backup => {
+        mode     => 'u+rwX,g+rwX,o=',            # optional, string
+      },
+    },
   },
   childs => {
     user1 => {
@@ -131,6 +142,13 @@ fhs_app::mother:
       manage:          true                      # optional, boolean
       path:            /app/backups              # optional, string
       mode:            u+rwX,g+rX,o+rX           # optional, string
+  defaults:
+    home:
+      mode:            u+rwX,g+rwX,o=            # optional, string
+    log:
+      mode:            u+rwX,g+rwX,o=            # optional, string
+    backup:
+      mode:            u+rwX,g+rwX,o=            # optional, string
 
 fhs_app::childs:
   list:
