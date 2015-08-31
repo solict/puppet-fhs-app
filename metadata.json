@@ -1,6 +1,6 @@
 {
   "name": "solict-fhs_app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Luís Pedro Algarvio <lp.algarvio@gmail.com>",
   "summary": "Puppet module that implements an unofficial extension to Filesystem Hierarchy Standard (FHS) to manage system applications (users and directory hierarchies)",
   "license": "GPL-2.0",

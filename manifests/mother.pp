@@ -62,8 +62,9 @@ class fhs_app::mother (
             }
             # Create root directory
             file { 'fhs_app-mother-root_dir':
-              ensure => 'directory',
+              ensure => inline_template("<% if scope.function_has_key([@mother['self']['root'], 'target']) %>link<% else %>directory<% end %>"),
               path   => $mother[self][root][path],
+              target => inline_template("<% if scope.function_has_key([@mother['self']['root'], 'target']) %>${mother[self][root][target]}<% else %>notlink<% end %>"),
               backup => false,
               force  => false,
               purge  => false,
@@ -90,8 +91,9 @@ class fhs_app::mother (
             }
             # Create homes directory
             file { 'fhs_app-mother-homes_dir':
-              ensure => 'directory',
+              ensure => inline_template("<% if scope.function_has_key([@mother['self']['homes'], 'target']) %>link<% else %>directory<% end %>"),
               path   => $mother[self][homes][path],
+              target => inline_template("<% if scope.function_has_key([@mother['self']['homes'], 'target']) %>${mother[self][homes][target]}<% else %>notlink<% end %>"),
               backup => false,
               force  => false,
               purge  => false,
@@ -118,8 +120,9 @@ class fhs_app::mother (
             }
             # Create logs directory
             file { 'fhs_app-mother-logs_dir':
-              ensure => 'directory',
+              ensure => inline_template("<% if scope.function_has_key([@mother['self']['logs'], 'target']) %>link<% else %>directory<% end %>"),
               path   => $mother[self][logs][path],
+              target => inline_template("<% if scope.function_has_key([@mother['self']['logs'], 'target']) %>${mother[self][logs][target]}<% else %>notlink<% end %>"),
               backup => false,
               force  => false,
               purge  => false,
@@ -146,8 +149,9 @@ class fhs_app::mother (
             }
             # Create backups directory
             file { 'fhs_app-mother-backups_dir':
-              ensure => 'directory',
+              ensure => inline_template("<% if scope.function_has_key([@mother['self']['backups'], 'target']) %>link<% else %>directory<% end %>"),
               path   => $mother[self][backups][path],
+              target => inline_template("<% if scope.function_has_key([@mother['self']['backups'], 'target']) %>${mother[self][backups][target]}<% else %>notlink<% end %>"),
               backup => false,
               force  => false,
               purge  => false,

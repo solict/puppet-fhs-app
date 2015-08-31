@@ -19,21 +19,25 @@ class { '::fhs_app':
       root => {
         manage         => true,                  # optional, boolean
         path           => "/app",                # optional, string
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rX,o+rX',     # optional, string
       },
       homes => {
         manage         => true,                  # optional, boolean
         path           => "/app/users",          # optional, string
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rX,o+rX',     # optional, string
       },
       logs => {
         manage         => true,                  # optional, boolean
         path           => "/app/logs",           # optional, string
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rX,o+rX',     # optional, string
       },
       backups => {
         manage         => true,                  # optional, boolean
         path           => "/app/backups",        # optional, string
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rX,o+rX',     # optional, string
       },
     },
@@ -67,14 +71,17 @@ class { '::fhs_app':
       },
       home => {
         manage         => true,                  # required, boolean
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
       log => {
         manage         => true,                  # required, boolean
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
       backup => {
         manage         => true,                  # required, boolean
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
     },
@@ -95,14 +102,17 @@ class { '::fhs_app':
       },
       home => {
         manage         => true,                  # required, boolean
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
       log => {
         manage         => true,                  # required, boolean
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
       backup => {
         manage         => true,                  # required, boolean
+        target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
     },
@@ -129,18 +139,22 @@ fhs_app::mother:
     root:
       manage:          true                      # optional, boolean
       path:            /app                      # optional, string
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rX,o+rX           # optional, string
     homes:
       manage:          true                      # optional, boolean
       path:            /app/users                # optional, string
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rX,o+rX           # optional, string
     logs:
       manage:          true                      # optional, boolean
       path:            /app/logs                 # optional, string
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rX,o+rX           # optional, string
     backups:
       manage:          true                      # optional, boolean
       path:            /app/backups              # optional, string
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rX,o+rX           # optional, string
   defaults:
     home:
@@ -168,12 +182,15 @@ fhs_app::childs:
       gid:             501                       # required, number
     home:
       manage:          true                      # required, boolean
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
     log:
       manage:          true                      # required, boolean
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
     backup:
       manage:          true                      # required, boolean
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
   user2:
     manage:            true                      # required, string
@@ -189,12 +206,15 @@ fhs_app::childs:
       gid:             502                       # required, number
     home:
       manage:          true                      # required, boolean
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
     log:
       manage:          true                      # required, boolean
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
     backup:
       manage:          true                      # required, boolean
+      target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
 
 ```

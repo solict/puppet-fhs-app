@@ -83,8 +83,9 @@ class fhs_app::child (
             if $childs[$child][home][manage]==true {
               # Create home directory
               file { "fhs_app-child-${child}_home_dir":
-                ensure => 'directory',
+                ensure => inline_template("<% if scope.function_has_key([@childs[@child]['home'], 'target']) %>link<% else %>directory<% end %>"),
                 path   => "${mother[self][homes][path]}/${child}",
+                target => inline_template("<% if scope.function_has_key([@childs[@child]['home'], 'target']) %>${childs[$child][home][target]}<% else %>notlink<% end %>"),
                 backup => false,
                 force  => false,
                 purge  => false,
@@ -102,8 +103,9 @@ class fhs_app::child (
             if $childs[$child][log][manage]==true {
               # Create log directory
               file { "fhs_app-child-${child}_log_dir":
-                ensure => 'directory',
+                ensure => inline_template("<% if scope.function_has_key([@childs[@child]['log'], 'target']) %>link<% else %>directory<% end %>"),
                 path   => "${mother[self][logs][path]}/${child}",
+                target => inline_template("<% if scope.function_has_key([@childs[@child]['log'], 'target']) %>${childs[$child][log][target]}<% else %>notlink<% end %>"),
                 backup => false,
                 force  => false,
                 purge  => false,
@@ -121,8 +123,9 @@ class fhs_app::child (
             if $childs[$child][backup][manage]==true {
               # Create backup directory
               file { "fhs_app-child-${child}_backup_dir":
-                ensure => 'directory',
+                ensure => inline_template("<% if scope.function_has_key([@childs[@child]['backup'], 'target']) %>link<% else %>directory<% end %>"),
                 path   => "${mother[self][backups][path]}/${child}",
+                target => inline_template("<% if scope.function_has_key([@childs[@child]['backup'], 'target']) %>${childs[$child][backup][target]}<% else %>notlink<% end %>"),
                 backup => false,
                 force  => false,
                 purge  => false,
