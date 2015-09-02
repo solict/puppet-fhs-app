@@ -52,6 +52,7 @@
 class fhs_app (
 
   # Hashes
+  $defaults                  = $fhs_app::params::defaults,
   $mother                    = $fhs_app::params::mother,
   $childs                    = $fhs_app::params::childs,
 
@@ -69,3 +70,4 @@ class fhs_app (
   anchor { 'fhs_app::end': }
 
 }
+

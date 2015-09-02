@@ -1,4 +1,5 @@
 The module can be configured with either declarations in a manifest or parameters in hiera.
+The defaults hash can be safely ignored.
 
 ### Manifest example
 
@@ -7,50 +8,63 @@ The module can be configured with either declarations in a manifest or parameter
 # App
 #
 class { '::fhs_app':
-  mother => {
-    self => {
-      manage           => true,                  # optional, boolean
+  defaults = {
+    mother => {
       user => {
-        name           => 'root',                # optional, string
+        name           => 'root',                 # optional, string
       },
       group => {
-        name           => 'root',                # optional, string
+        name           => 'root',                 # optional, string
       },
-      root => {
-        manage         => true,                  # optional, boolean
-        path           => "/app",                # optional, string
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rX,o+rX',     # optional, string
-      },
-      homes => {
-        manage         => true,                  # optional, boolean
-        path           => "/app/users",          # optional, string
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rX,o+rX',     # optional, string
-      },
-      logs => {
-        manage         => true,                  # optional, boolean
-        path           => "/app/logs",           # optional, string
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rX,o+rX',     # optional, string
-      },
-      backups => {
-        manage         => true,                  # optional, boolean
-        path           => "/app/backups",        # optional, string
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rX,o+rX',     # optional, string
+      home => {
+        path           => '/app',                 # optional, string
+        mode           => 'u+rwX,g+rX,o+rX',      # optional, string
       },
     },
-    defaults => {
+    childs => {
+      user => {
+        groups         => 'users',               # optional, array of strings
+        shell          => '/bin/false',          # optional, string
+        purgeSSH       => true,                  # optional, boolean
+      },
+      group => {
+      },
       home => {
-        mode     => 'u+rwX,g+rwX,o=',            # optional, string
+        mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
-      log => {
-        mode     => 'u+rwX,g+rwX,o=',            # optional, string
+      dirs => {
+        src => {
+          path         => 'src',                 # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        log => {
+          path         => 'log',                 # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        data => {
+          path         => 'data',                # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        backup => {
+          path         => 'backup',              # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
       },
-      backup => {
-        mode     => 'u+rwX,g+rwX,o=',            # optional, string
-      },
+    },
+  }
+  mother => {
+    manage             => true,                  # optional, boolean
+    user => {
+      name             => 'root',                # optional, string
+    },
+    group => {
+      name             => 'root',                # optional, string
+    },
+    home => {
+      manage           => true,                  # optional, boolean
+      path             => '/app' ,               # optional, string
+      target           => '/path',               # optional, string
+      mode             => 'u+rwX,g+rX,o+rX',     # optional, string
     },
   },
   childs => {
@@ -61,8 +75,10 @@ class { '::fhs_app':
         manage         => true,                  # required, boolean
         name           => 'user1',               # optional, string
         uid            => 501,                   # required, number
-        groups         => [users],               # optional, array of strings
+        groups         => 'users',               # optional, array of strings
         desc           => 'example user',        # optional, string
+        shell          => '/bin/false',          # optional, string
+        purgeSSH       => true,                  # optional, boolean
       },
       group => {
         manage         => true,                  # required, boolean
@@ -71,18 +87,35 @@ class { '::fhs_app':
       },
       home => {
         manage         => true,                  # required, boolean
+        path           => 'user1',               # optional, string
         target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
-      log => {
-        manage         => true,                  # required, boolean
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rwX,o=',      # optional, string
-      },
-      backup => {
-        manage         => true,                  # required, boolean
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rwX,o=',      # optional, string
+      dirs => {
+        src => {
+          manage       => true,                  # required, boolean
+          path         => 'src',                 # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        log => {
+          manage       => true,                  # required, boolean
+          path         => 'log',                 # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        data => {
+          manage       => true,                  # required, boolean
+          path         => 'data',                # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        backup => {
+          manage       => true,                  # required, boolean
+          path         => 'backup',              # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
       },
     },
     user2 => {
@@ -92,8 +125,10 @@ class { '::fhs_app':
         manage         => true,                  # required, boolean
         name           => 'user2',               # optional, string
         uid            => 502,                   # required, number
-        groups         => [users],               # optional, array of strings
+        groups         => 'users',               # optional, array of strings
         desc           => 'example user',        # optional, string
+        shell          => '/bin/false',          # optional, string
+        purgeSSH       => true,                  # optional, boolean
       },
       group => {
         manage         => true,                  # required, boolean
@@ -102,18 +137,35 @@ class { '::fhs_app':
       },
       home => {
         manage         => true,                  # required, boolean
+        path           => 'user2',               # optional, string
         target         => '/path',               # optional, string
         mode           => 'u+rwX,g+rwX,o=',      # optional, string
       },
-      log => {
-        manage         => true,                  # required, boolean
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rwX,o=',      # optional, string
-      },
-      backup => {
-        manage         => true,                  # required, boolean
-        target         => '/path',               # optional, string
-        mode           => 'u+rwX,g+rwX,o=',      # optional, string
+      dirs => {
+        src => {
+          manage       => true,                  # required, boolean
+          path         => 'src',                 # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        log => {
+          manage       => true,                  # required, boolean
+          path         => 'log',                 # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        data => {
+          manage       => true,                  # required, boolean
+          path         => 'data',                # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
+        backup => {
+          manage       => true,                  # required, boolean
+          path         => 'backup',              # optional, string
+          target       => '/path',               # optional, string
+          mode         => 'u+rwX,g+rwX,o=',      # optional, string
+        },
       },
     },
   },
@@ -129,45 +181,48 @@ class { '::fhs_app':
 #
 # App
 #
-fhs_app::mother:
-  self:
-    manage:            true                      # optional, boolean
+fhs_app::defaults:
+  mother:
     user:
-      name:            root                      # optional, string
+      name:            root                       # optional, string
     group:
-      name:            root                      # optional, string
-    root:
-      manage:          true                      # optional, boolean
-      path:            /app                      # optional, string
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rX,o+rX           # optional, string
-    homes:
-      manage:          true                      # optional, boolean
-      path:            /app/users                # optional, string
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rX,o+rX           # optional, string
-    logs:
-      manage:          true                      # optional, boolean
-      path:            /app/logs                 # optional, string
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rX,o+rX           # optional, string
-    backups:
-      manage:          true                      # optional, boolean
-      path:            /app/backups              # optional, string
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rX,o+rX           # optional, string
-  defaults:
+      name:            root                       # optional, string
+    home:
+      path:            /app                       # optional, string
+      mode:            u+rwX,g+rX,o+rX            # optional, string
+  childs:
+    user:
+      groups:          users                     # optional, array of strings
+      shell:           /bin/false                # optional, string
+      purgeSSH:        true                      # optional, boolean
+    group:
     home:
       mode:            u+rwX,g+rwX,o=            # optional, string
-    log:
-      mode:            u+rwX,g+rwX,o=            # optional, string
-    backup:
-      mode:            u+rwX,g+rwX,o=            # optional, string
-
+    dirs:
+      src:
+        path:          src                       # optional, string
+        mode:          u+rwX,g+rwX,o=            # optional, string
+      log:
+        path:          log                       # optional, string
+        mode:          u+rwX,g+rwX,o=            # optional, string
+      data:
+        path:          data                      # optional, string
+        mode:          u+rwX,g+rwX,o=            # optional, string
+      backup:
+        path:          backup                    # optional, string
+        mode:          u+rwX,g+rwX,o=            # optional, string
+fhs_app::mother:
+  manage:              true                      # optional, boolean
+  user:
+    name:              root                      # optional, string
+  group:
+    name:              root                      # optional, string
+  home:
+    manage:            true                      # optional, boolean
+    path:              /app                      # optional, string
+    target:            /path                     # optional, string
+    mode:              u+rwX,g+rX,o+rX           # optional, string
 fhs_app::childs:
-  list:
-    - user1                                      # required, string
-    - user2                                      # required, string
   user1:
     manage:            true                      # required, string
     user:
@@ -176,22 +231,38 @@ fhs_app::childs:
       uid:             501                       # required, number
       groups:          users                     # optional, array of strings
       desc:            example user              # optional, string
+      shell:           /bin/false                # optional, string
+      purgeSSH:        true                      # optional, boolean
     group:
       manage:          true                      # required, boolean
       name:            group1                    # optional, string
       gid:             501                       # required, number
     home:
       manage:          true                      # required, boolean
+      path:            user1                     # optional, string
       target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
-    log:
-      manage:          true                      # required, boolean
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rwX,o=            # optional, string
-    backup:
-      manage:          true                      # required, boolean
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rwX,o=            # optional, string
+    dirs:
+      src:
+        manage:          true                    # required, boolean
+        path:            src                     # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
+      log:
+        manage:          true                    # required, boolean
+        path:            log                     # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
+      data:
+        manage:          true                    # required, boolean
+        path:            data                    # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
+      backup:
+        manage:          true                    # required, boolean
+        path:            backup                  # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
   user2:
     manage:            true                      # required, string
     user:
@@ -200,22 +271,38 @@ fhs_app::childs:
       uid:             502                       # required, number
       groups:          users                     # optional, array of strings
       desc:            example user              # optional, string
+      shell:           /bin/false                # optional, string
+      purgeSSH:        true                      # optional, boolean
     group:
       manage:          true                      # required, boolean
       name:            group2                    # optional, string
       gid:             502                       # required, number
     home:
       manage:          true                      # required, boolean
+      path:            user2                     # optional, string
       target:          /path                     # optional, string
       mode:            u+rwX,g+rwX,o=            # optional, string
-    log:
-      manage:          true                      # required, boolean
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rwX,o=            # optional, string
-    backup:
-      manage:          true                      # required, boolean
-      target:          /path                     # optional, string
-      mode:            u+rwX,g+rwX,o=            # optional, string
+    dirs:
+      src:
+        manage:          true                    # required, boolean
+        path:            src                     # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
+      log:
+        manage:          true                    # required, boolean
+        path:            log                     # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
+      data:
+        manage:          true                    # required, boolean
+        path:            data                    # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
+      backup:
+        manage:          true                    # required, boolean
+        path:            backup                  # optional, string
+        target:          /path                   # optional, string
+        mode:            u+rwX,g+rwX,o=          # optional, string
 
 ```
 Additionally, for hiera, the classes lookup must be initialized in the main manifest:

@@ -41,22 +41,34 @@ it. Follows a brief comparison with the standard:
 |  root           |  root           |  root           |
 |  |              |  |              |  |              |
 |  +-etc          |  +-etc          |  +-etc          |
-|  |              |  | |            |  |              |
-|  +-app          |  | +-opt        |  +-usr          |
+|  | |            |  | |            |  | |            |
+|  | +-<app>      |  | +-opt        |  | +-<app>      |
+|  |              |  |   |          |  |              |
+|  +-app          |  |   +-<app>    |  +-usr          |
 |    |            |  |              |  | |            |
-|    +-homes      |  +-opt          |  | +-bin        |
-|    |            |  |              |  | |            |
-|    +-logs       |  +-var          |  | +-lib        |
-|    |            |    |            |  |              |
-|    +-data       |    +-backup     |  +-var          |
-|    |            |    |            |  | |            |
-|    +-backups    |    +-opt        |  | +-backup     |
-|                 |    |            |  | |            |
-|                 |    +-log        |  | +-lib        |
+|    +-<app>      |  +-opt          |  | +-bin        |
+|      |          |  | |            |  | |            |
+|      +-src      |  | +-<app>      |  | +-lib        |
+|      |          |  |              |  |   |          |
+|      +-log      |  +-var          |  |   +-<app>    |
+|      |          |    |            |  |              |
+|      +-data     |    +-opt        |  +-var          |
+|      |          |      |          |  | |            |
+|      +-backup   |      +-<app>    |  | +-backup     |
+|                 |                 |  | | |          |
+|                 |                 |  | | +-<app>    |
+|                 |                 |  | |            |
+|                 |                 |  | +-lib        |
+|                 |                 |  | | |          |
+|                 |                 |  | | +-<app>    |
 |                 |                 |  | |            |
 |                 |                 |  | +-log        |
+|                 |                 |  |   |          |
+|                 |                 |  |   +-<app>    |
 |                 |                 |  |              |
 |                 |                 |  +-srv          |
+|                 |                 |    |            |
+|                 |                 |    +-<app>      |
 |                 |                 |                 |
 |-----------------------------------------------------|
 ````
@@ -95,6 +107,11 @@ Parameters can be provided with both methods, for the class fhs_app.
 ## Usage
 
 The following parameters are used:
+
+* `defaults`
+A hash that defines the default parameters.
+It is hard coded into params.pp and can be ignored.
+There are used when the other hashes are missing or incomplete.
 
 * `mother`
 A hash that defines the parameters for the mother class.

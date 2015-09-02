@@ -15,52 +15,50 @@
 #
 class fhs_app::params {
 
-  # Mother hash
-  $mother = {
-    self => {
-      manage     => true,
+  # Defaults hash
+  $defaults = {
+    mother => {
       user => {
         name     => 'root',
       },
       group => {
         name     => 'root',
       },
-      root => {
-        manage   => true,
+      home => {
         path     => '/app',
         mode     => 'u+rwX,g+rX,o+rX',
       },
-      homes => {
-        manage   => true,
-        path     => '/app/users',
-        mode     => 'u+rwX,g+rX,o+rX',
-      },
-      logs => {
-        manage   => true,
-        path     => '/app/logs',
-        mode     => 'u+rwX,g+rX,o+rX',
-      },
-      backups => {
-        manage   => true,
-        path     => '/app/backups',
-        mode     => 'u+rwX,g+rX,o+rX',
-      },
     },
-    defaults => {
+    childs => {
+      user => {
+        groups   => 'users',
+        shell    => '/bin/false',
+        purgeSSH => true,
+      },
+      group => {
+      },
       home => {
         mode     => 'u+rwX,g+rwX,o=',
       },
-      log => {
-        mode     => 'u+rwX,g+rwX,o=',
-      },
-      backup => {
-        mode     => 'u+rwX,g+rwX,o=',
+      dirs => {
+        src => {
+          path   => 'src',
+          mode   => 'u+rwX,g+rwX,o=',
+        },
+        log => {
+          path   => 'log',
+          mode   => 'u+rwX,g+rwX,o=',
+        },
+        data => {
+          path   => 'data',
+          mode   => 'u+rwX,g+rwX,o=',
+        },
+        backup => {
+          path   => 'backup',
+          mode   => 'u+rwX,g+rwX,o=',
+        },
       },
     },
-  }
-
-  # Childs hash
-  $childs = {
   }
 
 }

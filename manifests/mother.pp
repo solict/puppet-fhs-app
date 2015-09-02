@@ -17,147 +17,59 @@
 class fhs_app::mother (
 
   # Store hashes to simplify variable usage
+  $defaults = $fhs_app::defaults,
   $mother = $fhs_app::mother,
 
 ) inherits fhs_app {
 
-  # Validate mother hash
-  if has_key($mother, 'self') and has_key($mother, 'defaults') {
+  # Validate defaults and mother hash
+  if is_hash($defaults) and is_hash($mother) {
 
     #
     # Validate if mother is enabled
     #
-    if has_key($mother[self], 'manage') {
-      if $mother[self][manage]==true {
+    if has_key($mother, 'manage') {
+      if $mother[manage]==true {
 
-        #
-        # Validate the main parameters
-        #
-        if !has_key($mother[self], 'user') {
-          fail('Invalid fhs_app::mother:self:user hash')
+        # Validate shared parameters
+        if !has_key($mother, 'user') and !has_key($defaults[mother], 'user') {
+          fail('Invalid fhs_app::mother:user and fhs_app::defaults:mother:user hash')
         }
-        if !has_key($mother[self][user], 'name') {
-          fail('Invalid fhs_app::mother:self:user:name hash')
+        if !has_key($mother[user], 'name') and !has_key($defaults[mother][user], 'name') {
+          fail('Invalid fhs_app::mother:user:name and fhs_app::defaults:mother:user:name hash')
         }
-        if !has_key($mother[self], 'group') {
-          fail('Invalid fhs_app::mother:self:group hash')
+        if !has_key($mother, 'group') and !has_key($defaults[mother], 'group') {
+          fail('Invalid fhs_app::mother:group and fhs_app::defaults:mother:group hash')
         }
-        if !has_key($mother[self][group], 'name') {
-          fail('Invalid fhs_app::mother:self:group:name hash')
-        }
-
-        #
-        # Validate if mother root is enabled
-        #
-        if has_key($mother[self][root], 'manage') {
-          if $mother[self][root][manage]==true {
-            #
-            # Validate other parameters
-            #
-            if !has_key($mother[self][root], 'path') {
-              fail('Invalid fhs_app::mother:self:root:path hash')
-            }
-            if !has_key($mother[self][root], 'mode') {
-              fail('Invalid fhs_app::mother:self:root:mode hash')
-            }
-            # Create root directory
-            file { 'fhs_app-mother-root_dir':
-              ensure => inline_template("<% if scope.function_has_key([@mother['self']['root'], 'target']) %>link<% else %>directory<% end %>"),
-              path   => $mother[self][root][path],
-              target => inline_template("<% if scope.function_has_key([@mother['self']['root'], 'target']) %>${mother[self][root][target]}<% else %>notlink<% end %>"),
-              backup => false,
-              force  => false,
-              purge  => false,
-              owner  => $mother[self][user][name],
-              group  => $mother[self][group][name],
-              mode   => $mother[self][root][mode],
-            }
-          }
+        if !has_key($mother[group], 'name') and !has_key($defaults[mother][group], 'name') {
+          fail('Invalid fhs_app::mother:group:name and fhs_app::defaults:mother:group:name hash')
         }
 
         #
-        # Validate if mother homes is enabled
+        # Validate if mother home is enabled
         #
-        if has_key($mother[self][homes], 'manage') {
-          if $mother[self][homes][manage]==true {
-            #
-            # Validate other parameters
-            #
-            if !has_key($mother[self][homes], 'path') {
-              fail('Invalid fhs_app::mother:self:homes:path hash')
-            }
-            if !has_key($mother[self][homes], 'mode') {
-              fail('Invalid fhs_app::mother:self:homes:mode hash')
-            }
-            # Create homes directory
-            file { 'fhs_app-mother-homes_dir':
-              ensure => inline_template("<% if scope.function_has_key([@mother['self']['homes'], 'target']) %>link<% else %>directory<% end %>"),
-              path   => $mother[self][homes][path],
-              target => inline_template("<% if scope.function_has_key([@mother['self']['homes'], 'target']) %>${mother[self][homes][target]}<% else %>notlink<% end %>"),
-              backup => false,
-              force  => false,
-              purge  => false,
-              owner  => $mother[self][user][name],
-              group  => $mother[self][group][name],
-              mode   => $mother[self][homes][mode],
-            }
-          }
-        }
-
-        #
-        # Validate if mother logs is enabled
-        #
-        if has_key($mother[self][logs], 'manage') {
-          if $mother[self][logs][manage]==true {
-            #
-            # Validate other parameters
-            #
-            if !has_key($mother[self][logs], 'path') {
-              fail('Invalid fhs_app::mother:self:logs:path hash')
-            }
-            if !has_key($mother[self][logs], 'mode') {
-              fail('Invalid fhs_app::mother:self:logs:mode hash')
-            }
-            # Create logs directory
-            file { 'fhs_app-mother-logs_dir':
-              ensure => inline_template("<% if scope.function_has_key([@mother['self']['logs'], 'target']) %>link<% else %>directory<% end %>"),
-              path   => $mother[self][logs][path],
-              target => inline_template("<% if scope.function_has_key([@mother['self']['logs'], 'target']) %>${mother[self][logs][target]}<% else %>notlink<% end %>"),
-              backup => false,
-              force  => false,
-              purge  => false,
-              owner  => $mother[self][user][name],
-              group  => $mother[self][group][name],
-              mode   => $mother[self][logs][mode],
-            }
-          }
-        }
-
-        #
-        # Validate if mother backups is enabled
-        #
-        if has_key($mother[self][backups], 'manage') {
-          if $mother[self][backups][manage]==true {
-            #
-            # Validate other parameters
-            #
-            if !has_key($mother[self][backups], 'path') {
-              fail('Invalid fhs_app::mother:self:backups:path hash')
-            }
-            if !has_key($mother[self][backups], 'mode') {
-              fail('Invalid fhs_app::mother:self:backups:mode hash')
-            }
-            # Create backups directory
-            file { 'fhs_app-mother-backups_dir':
-              ensure => inline_template("<% if scope.function_has_key([@mother['self']['backups'], 'target']) %>link<% else %>directory<% end %>"),
-              path   => $mother[self][backups][path],
-              target => inline_template("<% if scope.function_has_key([@mother['self']['backups'], 'target']) %>${mother[self][backups][target]}<% else %>notlink<% end %>"),
-              backup => false,
-              force  => false,
-              purge  => false,
-              owner  => $mother[self][user][name],
-              group  => $mother[self][group][name],
-              mode   => $mother[self][backups][mode],
+        if has_key($mother, 'home') {
+          if has_key($mother[home], 'manage') {
+            if $mother[home][manage]==true {
+              # Validate specific parameters
+              if !has_key($mother[home], 'path') and !has_key($defaults[mother][home], 'path') {
+                fail('Invalid fhs_app::mother:home:path and fhs_app::defaults:mother:home:path hash')
+              }
+              if !has_key($mother[home], 'mode') and !has_key($defaults[mother][home], 'mode') {
+                fail('Invalid fhs_app::mother:home:mode and fhs_app::defaults:mother:home:mode hash')
+              }
+              # Create mother home directory
+              file { 'fhs_app-mother-home_dir':
+                ensure => inline_template("<% if scope.function_has_key([@mother['home'], 'target']) %>link<% else %>directory<% end %>"),
+                target => inline_template("<% if scope.function_has_key([@mother['home'], 'target']) %>${mother[home][target]}<% else %>notlink<% end %>"),
+                path   => inline_template("<% if scope.function_has_key([@mother['home'], 'path']) %>${mother[home][path]}<% else %>${defaults[mother][home][path]}<% end %>"),
+                backup => false,
+                force  => false,
+                purge  => false,
+                owner  => inline_template("<% if scope.function_has_key([@mother['user'], 'name']) %>${mother[user][name]}<% else %>${defaults[mother][user][name]}<% end %>"),
+                group  => inline_template("<% if scope.function_has_key([@mother['group'], 'name']) %>${mother[group][name]}<% else %>${defaults[mother][group][name]}<% end %>"),
+                mode   => inline_template("<% if scope.function_has_key([@mother['home'], 'mode']) %>${mother[home][mode]}<% else %>${defaults[mother][home][mode]}<% end %>"),
+              }
             }
           }
         }
@@ -165,9 +77,8 @@ class fhs_app::mother (
       }
     }
 
-  }
-  else {
-    fail('Invalid fhs_app::mother:self and/or fhs_app::mother:defaults hash')
+  } else {
+    fail('Invalid fhs_app::mother and/or fhs_app::defaults hash')
   }
 
 }
