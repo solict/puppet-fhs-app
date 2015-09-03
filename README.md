@@ -92,14 +92,15 @@ applications parameterized, permissions and owners included.
 
 ### Setup Requirements
 
-Puppet-stdlib is a requirement and should be automatically installed.
+The following modules are requirements and should be installed.
+* puppetlabs-stdlib
 
 ### Beginning with the module
 
 When deployed, the directory of the module should be renamed to fhs_app.
 
-The class fhs_app must be declared in a manifest or loaded with hiera_include
-to be initialized.
+The class fhs_app must be declared in a manifest or loaded with
+hiera_include to be initialized.
 All other classes are autoloaded and do not need to be manually initialized.
 
 Parameters can be provided with both methods, for the class fhs_app.
@@ -111,7 +112,7 @@ The following parameters are used:
 * `defaults`
 A hash that defines the default parameters.
 It is hard coded into params.pp and can be ignored.
-There are used when the other hashes are missing or incomplete.
+They are used when the other hashes are missing or incomplete.
 
 * `mother`
 A hash that defines the parameters for the mother class.
@@ -134,7 +135,7 @@ There are 4 classes provided by this module:
 - fhs_app, which initializes the module are accepts parameters
 - fhs_app::params, which is autoloaded to retrieve parameters
 - fhs_app::mother, which is autoloaded to create the /app FHS hierarchy
-- fhs_app::childs, which is autoloaded to create the applications provided
+- fhs_app::childs, which is autoloaded to create the provided applications
 
 The parameterized user, group and file resources are managed as configured, as
 defined for params mother and childs.
@@ -154,3 +155,4 @@ Contributions and issues are welcomed.
 ## Release Notes
 
 This source code comes with absolutely no warranty or liability for damages.
+
