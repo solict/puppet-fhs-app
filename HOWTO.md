@@ -70,7 +70,6 @@ class { '::fhs_app':
   childs => {
     user1 => {
       manage           => true,                  # required, boolean
-      name             => 'user1',               # required, string
       user => {
         manage         => true,                  # required, boolean
         name           => 'user1',               # optional, string
@@ -120,7 +119,6 @@ class { '::fhs_app':
     },
     user2 => {
       manage           => true,                  # required, boolean
-      name             => 'user2',               # required, string
       user => {
         manage         => true,                  # required, boolean
         name           => 'user2',               # optional, string

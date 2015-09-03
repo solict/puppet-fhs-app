@@ -52,9 +52,9 @@
 class fhs_app (
 
   # Hashes
-  $defaults                  = $fhs_app::params::defaults,
-  $mother                    = $fhs_app::params::mother,
-  $childs                    = $fhs_app::params::childs,
+  $defaults = $fhs_app::params::defaults,
+  $mother   = $fhs_app::params::mother,
+  $childs   = $fhs_app::params::childs,
 
 ) inherits fhs_app::params {
 
@@ -65,8 +65,8 @@ class fhs_app (
   anchor { 'fhs_app::begin': } ->
     # Load Mother class
     class { '::fhs_app::mother': } ->
-    # Load Child class
-    class { '::fhs_app::child': } ->
+    # Load Childs class
+    class { '::fhs_app::childs': } ->
   anchor { 'fhs_app::end': }
 
 }
